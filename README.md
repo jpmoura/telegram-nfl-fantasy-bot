@@ -13,9 +13,11 @@ information can be translated into fantasy points in this case.
 In order to use this bot you need to create a .ENV file with two specific keys:
 
 * BOT_TOKEN: refers to the bot API token, which one you can get from [@BotFather](https://telegram.me/botfather);
-* NEWS_API_TOKEN: refers to the [NewsAPI.org](https://newsapi.org) API token which one you can get [here](https://newsapi.org/princing).
+* NEWS_API_TOKEN: refers to the [NewsAPI.org](https://newsapi.org) API token which one you can get
+[here](https://newsapi.org/princing).
 
-After set this .ENV file with these two keys, just run the command ```npm start```.
+After set this .ENV file with these two keys, just run the command ```npm install && npm start```. This bot was built on
+top of NodeJS v8.9.4.
 
 ## Know Issues
 

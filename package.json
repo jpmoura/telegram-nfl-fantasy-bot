@@ -1,0 +1,25 @@
+{
+  "name": "nfl-telegram-bot",
+  "version": "1.0.0",
+  "description": "A Telegram bot that provides the latest news about the NFL",
+  "repository": "github:jpmoura/nfl-news-for-telegram",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NFL",
+    "telegram",
+    "bot",
+    "news"
+  ],
+  "author": "João Pedro Santos de Moura <jp.moura@usp.br> (https://github.com/jpmoura)",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "newsapi": "^2.4.0",
+    "node-schedule": "^1.3.0",
+    "telegraf": "^3.25.0"
+  }
+}

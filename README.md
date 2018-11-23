@@ -26,5 +26,6 @@ top of NodeJS v8.9.4.
 
 ## TODO
 
-* Persist the chat ids.
+* Persist the chat ids;
+* Aggregate tweets from [@NFLResearch](https://twitter.com/NFLResearch) for real time statistics about the games
 * ~~Build a more elegant message, possibly using MarkDown instead using images with caption.~~

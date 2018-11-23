@@ -26,5 +26,5 @@ top of NodeJS v8.9.4.
 
 ## TODO
 
-* Persist the chat ids;
-* Build a more elegant message, possibly using MarkDown instead using images with caption.
+* Persist the chat ids.
+* ~~Build a more elegant message, possibly using MarkDown instead using images with caption.~~

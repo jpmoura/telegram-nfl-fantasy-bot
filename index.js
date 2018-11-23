@@ -22,19 +22,28 @@ function updateNews(fireDate) {
     newsApi.v2.topHeadlines({sources: 'nfl-news'})
         .then(response => {
 
-            if(latestNews.length === 0) latestNews = response.articles
+            let newArticles = []
 
-            let recentNews = response.articles
-            let oldNews = new Set(latestNews)
-            let difference = new Set([...recentNews.filter(x => oldNews.has(x))])
+            if(latestNews.length === 0) newArticles = response.articles
+            else {
+                response.articles.forEach(newArticle => {
+                    let isOld = false
 
-            difference.forEach(news => {
-                chats.forEach(chat => {
-                    sendNews(chat, news.urlToImage, news.title)
+                    latestNews.forEach(oldArticle => {
+                        if(oldArticle.title === newArticle.title) isOld = true
+                    })
+
+                    if(!isOld) newArticles.push(newArticle)
+                })
+            }
+
+            newArticles.forEach(article => {
+                chats.forEach(chatId => {
+                    sendNews(chatId, article)
                 })
             })
-
-            console.log(`Sent ${difference.size} new news`)
+            if(newArticles.length > 0) console.log(`Sent ${newArticles.length} new articles to ${chats.size} chats`)
+            else console.log("No new articles found")
 
             latestNews = response.articles
         })
@@ -42,13 +51,15 @@ function updateNews(fireDate) {
 }
 
 /**
- * Send a news to a specific chat with its image and title
- * @param chatID String|Integer The chat ID that will receive the news
- * @param imageURL String The news' image URL
- * @param newsTitle String The news' title that will be the image caption
+ * Send a article to a specific chat with its image and title
+ * @param chatID String|Integer The chat ID that will receive the article
+ * @param article Object The object that represent article
  */
-function sendNews(chatID, imageURL, newsTitle) {
-    mailman.sendPhoto(chatID, imageURL, {caption: newsTitle})
+function sendNews(chatID, article) {
+    mailman.sendMessage(
+        chatID,
+        `[${article.title}. Reported by ${article.author} at ${new Date(article.publishedAt).toString()}](${article.urlToImage})\n\n[${article.description}](${article.url})`,
+        {parse_mode: "Markdown"})
 }
 
 // Update the news every minute
@@ -71,7 +82,7 @@ bot.command("firstdown", (ctx) => {
     let chatId = ctx.message.chat.id
     chats.add(chatId)
     ctx.reply("Gotcha! From now on you will receive news about NFL as soon them are published 👌")
-    console.log(`New client ${chatId} added. Clients: ${chats.toString()}`)
+    console.log(`New client ${chatId} added`)
 })
 
 /**
@@ -81,7 +92,7 @@ bot.command("fumble", (ctx) => {
     let chatId = ctx.message.chat.id
     chats.delete(chatId)
     ctx.replyWithMarkdown("Ok then, you will not hear from me anymore 😭\nIf you change your mind, just send me `/firstdown` again 😉")
-    console.log(`Chat ${chatId} removed from list. Clients: ${chats.toString()}`)
+    console.log(`Chat ${chatId} removed from list`)
 })
 
 /**
@@ -89,7 +100,7 @@ bot.command("fumble", (ctx) => {
  */
 bot.command('latest', (ctx) => {
     if(latestNews.length === 0) ctx.reply("Sorry, I don't have the latest news yet 😥")
-    else sendNews(ctx.message.chat.id, latestNews[0].urlToImage, latestNews[0].title)
+    else sendNews(ctx.message.chat.id, latestNews[0])
 })
 
 // Easter eggs

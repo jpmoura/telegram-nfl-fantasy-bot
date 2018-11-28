@@ -16,17 +16,20 @@ const T = new Twit({
     app_only_auth:   true
 })
 
+const axios = require('axios')
+const $ = require('cheerio')
 const schedule = require('node-schedule')
+const fantasyLeagueURL = `https://fantasy.nfl.com/league/${process.env.FANTASY_LEAGUE_ID}`
 
 const SOURCES = {
     twitter : "id",
-    instagram: "id",
-    news: "title"
+    news: "title",
 }
 
 let latestNews = []
 let tweets = []
 let posts = []
+let fantasyTransactions = []
 let chats = new Set()
 
 function updateArrayContent(newContents, media) {
@@ -103,6 +106,52 @@ function updateNews(fireDate) {
 
         })
 
+    // Get transactions from Fantasy League
+    axios(fantasyLeagueURL)
+        .then(response => {
+            let videoRegex = /View\sVideos/gi
+            let newsRegex = /View\sNews/gi
+            let spaceRegex = /(.)\1{4,}/gi
+            let updateTransactions = []
+            let newTransactions = []
+
+            let rawTransactions = ($('.textWrap p', response.data))
+            rawTransactions.each((index, item) => {
+                let transaction = $(item).text()
+                transaction = transaction.replace(videoRegex, '').replace(newsRegex, '').replace(spaceRegex, ' ')
+                newTransactions.push(transaction)
+            })
+
+            if(fantasyTransactions.length === 0) updateTransactions = newTransactions
+            else {
+                newTransactions.forEach(newTransaction => {
+                    let isOld = false
+
+                    fantasyTransactions.forEach(oldTransaction => {
+                        if(oldTransaction === newTransaction) isOld = true
+                    })
+
+                    if(!isOld) updateTransactions.push(newTransaction)
+                })
+            }
+
+            // send the new ones
+            updateTransactions.forEach(transaction => {
+                chats.forEach(chatId => {
+                    sendFantasyTransaction(chatId, transaction)
+                })
+            })
+
+            if(updateTransactions.length > 0) console.log(`Sent ${updateTransactions.length} fantasy transactions to ${chats.size} clients`)
+            else console.log("Nothing new on fantasy league")
+
+            fantasyTransactions = newTransactions
+        })
+        .catch(err => {
+            console.log(`Error fetching fantasy transactions: ${err}`)
+            console.log(err)
+        })
+
     console.log(`Update contents at ${fireDate}`)
 }
 
@@ -135,6 +184,13 @@ function sendTweet(chatId, tweet) {
     mailman.sendMessage(chatId, text, {parse_mode: "Markdown"})
         .catch(err => {
             console.log(`Error sending tweet: ${err.message}`)
+        })
+}
+
+function sendFantasyTransaction(chatId, transaction) {
+    mailman.sendMessage(chatId, `Fantasy transaction: ${transaction}`)
+        .catch(err => {
+            console.log(`Error sending transaction: ${err.message}`)
         })
 }
 

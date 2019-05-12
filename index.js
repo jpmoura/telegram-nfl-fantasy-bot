@@ -232,8 +232,7 @@ bot.help((ctx) =>
 bot.command("firstdown", (ctx) => {
     let chatId = ctx.message.chat.id
     ActiveChats.add(chatId)
-    ctx.reply(`Gotcha ${ctx.message.chat.first_name}! From now on you will receive news about NFL as soon them are
-    published 👌`)
+    ctx.reply(`Gotcha ${ctx.message.chat.first_name}! From now on you will receive news about NFL as soon them are published 👌`)
     console.log(`New client ${chatId} added`)
 })
 

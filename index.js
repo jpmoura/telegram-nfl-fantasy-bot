@@ -21,16 +21,15 @@ const $ = require('cheerio')
 const schedule = require('node-schedule')
 const fantasyLeagueURL = `https://fantasy.nfl.com/league/${process.env.FANTASY_LEAGUE_ID}`
 
-const SOURCES = {
+const SourceID = {
     twitter : "id",
     news: "title",
 }
 
-let latestNews = []
-let tweets = []
-let posts = []
-let fantasyTransactions = []
-let chats = new Set()
+let News = []
+let Tweets = []
+let FantasyTransactions = []
+let ActiveChats = new Set()
 
 function updateArrayContent(newContents, media) {
     let updatedContent = []
@@ -41,65 +40,74 @@ function updateArrayContent(newContents, media) {
     switch (media) {
         case "twitter":
             send = sendTweet
-            sourceMedia = "tweets"
-            oldContents = tweets
-            break
-        case "instagram":
-            sourceMedia = "posts"
-            oldContents = posts
+            sourceMedia = "Tweets"
+            oldContents = Tweets
             break
         case "news":
             send = sendNews
             sourceMedia = "articles"
-            oldContents = latestNews
+            oldContents = News
             break
     }
 
-    if(oldContents.length === 0) updatedContent = newContents
-    else {
+    if (oldContents.length === 0)
+        updatedContent = newContents
+    else
+    {
         newContents.forEach(newContent => {
             let isOld = false
 
             oldContents.forEach(oldContent => {
-                if(oldContent[SOURCES[media]] === newContent[SOURCES[media]]){
+                if (oldContent[SourceID[media]] === newContent[SourceID[media]])
                     isOld = true
-                }
             })
 
-            if(!isOld) updatedContent.push(newContent)
+            if (!isOld)
+                updatedContent.push(newContent)
         })
     }
 
     updatedContent.forEach(content => {
-        chats.forEach(chatID => {
+        ActiveChats.forEach(chatID => {
             send(chatID, content)
         })
     })
 
-    if(updatedContent.length === 0) console.log(`Nothing new found on ${media}`)
-    else console.log(`Sent ${updatedContent.length} new ${sourceMedia} to ${chats.size} clients`)
+    if (updatedContent.length === 0)
+        console.log(`Nothing new found on ${media}`)
+    else
+        console.log(`Sent ${updatedContent.length} new ${sourceMedia} to ${ActiveChats.size} clients`)
 
     return newContents
 }
 
 /**
- * Update the database with the latest news and tweets
+ * Update the database with the latest news and Tweets
  * @param fireDate Date The GMT date that the function was executed
  */
 function updateNews(fireDate) {
     // Articles from NFL News
     newsApi.v2.topHeadlines({sources: 'nfl-news'})
         .then(response => {
-            latestNews = updateArrayContent(response.articles, "news")
+            News = updateArrayContent(response.articles, "news")
         })
 
     // Tweets from @NFLResearch
     T.get("statuses/user_timeline",
-        {screen_name: "NFLResearch", count: 10, exclude_replies: true, include_rts: false, tweet_mode: "extended", trim_user: true},
-        (err, data, response) => {
-            if(err) console.log(`Errors: ${err}`)
-            else tweets = updateArrayContent(data, "twitter")
-
+        {
+            screen_name: "NFLResearch",
+            count: 10,
+            exclude_replies: true,
+            include_rts: false,
+            tweet_mode: "extended",
+            trim_user: true
+        },
+        (err, data) =>
+        {
+            if (err)
+                console.log(`Errors: ${err}`)
+            else
+                Tweets = updateArrayContent(data, "twitter")
         })
 
     // Get transactions from Fantasy League
@@ -114,38 +122,47 @@ function updateNews(fireDate) {
             let rawTransactions = ($('.textWrap p', response.data))
             rawTransactions.each((index, item) => {
                 let transaction = $(item).text()
-                transaction = transaction.replace(videoRegex, '').replace(newsRegex, '').replace(spaceRegex, ' ')
+
+                transaction = transaction.replace(videoRegex, '')
+                    .replace(newsRegex, '')
+                    .replace(spaceRegex, ' ')
+
                 newTransactions.push(transaction)
             })
 
-            if(fantasyTransactions.length === 0) updateTransactions = newTransactions
-            else {
+            if (FantasyTransactions.length === 0)
+                updateTransactions = newTransactions
+            else
+            {
                 newTransactions.forEach(newTransaction => {
                     let isOld = false
 
-                    fantasyTransactions.forEach(oldTransaction => {
-                        if(oldTransaction === newTransaction) isOld = true
+                    FantasyTransactions.forEach(oldTransaction => {
+                        if (oldTransaction === newTransaction)
+                            isOld = true
                     })
 
-                    if(!isOld) updateTransactions.push(newTransaction)
+                    if (!isOld)
+                        updateTransactions.push(newTransaction)
                 })
             }
 
             // send the new ones
             updateTransactions.forEach(transaction => {
-                chats.forEach(chatId => {
+                ActiveChats.forEach(chatId => {
                     sendFantasyTransaction(chatId, transaction)
                 })
             })
 
-            if(updateTransactions.length > 0) console.log(`Sent ${updateTransactions.length} fantasy transactions to ${chats.size} clients`)
-            else console.log("Nothing new on fantasy league")
+            if (updateTransactions.length > 0)
+                console.log(`Sent ${updateTransactions.length} fantasy transactions to ${ActiveChats.size} clients`)
+            else
+                console.log("Nothing new on fantasy league")
 
-            fantasyTransactions = newTransactions
+            FantasyTransactions = newTransactions
         })
         .catch(err => {
-            console.log(`Error fetching fantasy transactions: ${err}`)
-            console.log(err)
+            console.log(`Error fetching fantasy transactions: ${err}`, err)
         })
 
     console.log(`Update contents at ${fireDate}`)
@@ -159,7 +176,8 @@ function updateNews(fireDate) {
 function sendNews(chatID, article) {
     mailman.sendMessage(
         chatID,
-        `[${article.title}. Reported by ${article.author} at ${new Date(article.publishedAt).toString()}](${article.urlToImage})\n\n[${article.description}](${article.url})`,
+        `[${article.title}. Reported by ${article.author} at ${new Date(article.publishedAt).toString()}]
+        (${article.urlToImage})\n\n[${article.description}](${article.url})`,
         {parse_mode: "Markdown"})
         .catch(err => {
             console.log(`Error sending article: ${err.message}`)
@@ -174,8 +192,10 @@ function sendNews(chatID, article) {
 function sendTweet(chatId, tweet) {
     let text
 
-    if(tweet.truncated === true) text = tweet.text
-    else text = tweet["full_text"]
+    if (tweet.truncated === true)
+        text = tweet.text
+    else
+        text = tweet["full_text"]
 
     mailman.sendMessage(chatId, text, {parse_mode: "Markdown"})
         .catch(err => {
@@ -195,21 +215,25 @@ schedule.scheduleJob('* * * * *', fireDate => updateNews(fireDate));
 
 // Global Commands
 bot.start((ctx) => {
-    ctx.replyWithMarkdown("Hey, if you want to receive news about the NFL just send me the command `/firstdown` and I will start to send you the latest news about the league. I'm powered by [NewsAPI.org](https://newsapi.org)")
+    ctx.replyWithMarkdown("Hey, if you want to receive news about the NFL just send me the command" +
+        "`/firstdown` and I will start to send you the latest news about the league." +
+        "I'm powered by [NewsAPI.org](https://newsapi.org)")
 })
 
 bot.help((ctx) =>
-    ctx.replyWithMarkdown("*Hello there*. I can help you to keep up informed about the NFL. I understand the following commands:\n\n" +
-    "`/firstdown` I will put you in my mailing list and will send you every update about the league\n" +
-    "`/fumble` I will remove you from my mailing list and you will not receive my updates"))
+    ctx.replyWithMarkdown("*Hello there*. I can help you to keep up informed about the NFL." +
+        "I understand the following commands:\n\n" +
+        "`/firstdown` I will put you in my mailing list and will send you every update about the league\n" +
+        "`/fumble` I will remove you from my mailing list and you will not receive my updates"))
 
 /**
  * Insert a client in the mailing list
  */
 bot.command("firstdown", (ctx) => {
     let chatId = ctx.message.chat.id
-    chats.add(chatId)
-    ctx.reply(`Gotcha ${ctx.message.chat.first_name}! From now on you will receive news about NFL as soon them are published 👌`)
+    ActiveChats.add(chatId)
+    ctx.reply(`Gotcha ${ctx.message.chat.first_name}! From now on you will receive news about NFL as soon them are 
+    published 👌`)
     console.log(`New client ${chatId} added`)
 })
 
@@ -218,8 +242,9 @@ bot.command("firstdown", (ctx) => {
  */
 bot.command("fumble", (ctx) => {
     let chatId = ctx.message.chat.id
-    chats.delete(chatId)
-    ctx.replyWithMarkdown("Ok then, you will not hear from me anymore 😭\nIf you change your mind, just send me `/firstdown` again 😉")
+    ActiveChats.delete(chatId)
+    ctx.replyWithMarkdown("Ok then, you will not hear from me anymore 😭\n" +
+        "If you change your mind, just send me `/firstdown` again 😉")
     console.log(`Chat ${chatId} removed from list`)
 })
 
@@ -227,10 +252,12 @@ bot.command("fumble", (ctx) => {
  * Reply the client with the latest news and tweet
  */
 bot.command('latest', (ctx) => {
-    if(latestNews.length === 0) ctx.reply("Sorry, I don't have the latest news yet 😥")
-    else {
-        sendNews(ctx.message.chat.id, latestNews[0])
-        sendTweet(ctx.message.chat.id, tweets[0])
+    if (News.length === 0)
+        ctx.reply("Sorry, I don't have the latest news yet 😥")
+    else
+    {
+        sendNews(ctx.message.chat.id, News[0])
+        sendTweet(ctx.message.chat.id, Tweets[0])
     }
 })
 

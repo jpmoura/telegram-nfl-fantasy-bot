@@ -63,3 +63,9 @@ typings/
 
 # Idea config folder
 /.idea
+
+# SonarLint folder
+/.scannerwork/
+
+# SonarScanner properties
+/sonar-project.properties

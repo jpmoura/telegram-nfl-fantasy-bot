@@ -34,7 +34,7 @@ let chats = new Set()
 
 function updateArrayContent(newContents, media) {
     let updatedContent = []
-    let oldContents = null
+    let oldContents = []
     let send = null
     let sourceMedia = null
 
@@ -45,7 +45,6 @@ function updateArrayContent(newContents, media) {
             oldContents = tweets
             break
         case "instagram":
-            send = null
             sourceMedia = "posts"
             oldContents = posts
             break
@@ -53,9 +52,6 @@ function updateArrayContent(newContents, media) {
             send = sendNews
             sourceMedia = "articles"
             oldContents = latestNews
-            break
-        default:
-            send = null
             break
     }
 
@@ -237,7 +233,6 @@ bot.command('latest', (ctx) => {
         sendTweet(ctx.message.chat.id, tweets[0])
     }
 })
-
 
 // Easter eggs
 bot.hears('Da Bears', (ctx) => ctx.reply('GO BEARS! 🐻⬇️'))

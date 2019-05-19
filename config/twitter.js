@@ -1,7 +1,7 @@
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 dotenv.config()
 
-export default {
+module.exports = {
     consumer: {
         key: process.env.TWITTER_CONSUMER_KEY,
         secret: process.env.TWITTER_CONSUMER_SECRET

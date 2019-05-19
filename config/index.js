@@ -1,9 +1,9 @@
-import botConfig from './bot'
-import nflConfig from './nfl'
-import fantasyConfig from 'fantasy'
-import twitterConfig from './twitter'
+const botConfig = require('./bot')
+const nflConfig = require('./nfl')
+const fantasyConfig = require('./fantasy')
+const twitterConfig = require('./twitter')
 
-export default {
+module.exports = {
     bot: botConfig,
     twitter: twitterConfig,
     fantasy: fantasyConfig,

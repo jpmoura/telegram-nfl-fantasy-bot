@@ -1,25 +1,26 @@
-import axios from 'axios'
-import config from '../../config'
-import $ from 'cheerio'
+const axios = require('axios')
+const config =  require('../../config')
+const $ = require('cheerio')
 
 const fantasyLeagueURL = `${config.fantasy.league.url}${config.fantasy.league.id}`
 
-const getFantasyLeagueTransaction = () => {
+const getFantasyLeagueTransaction = async () => {
     let transactions = []
 
-    axios(fantasyLeagueURL).then(response => {
-        let videoRegex = /View\sVideos/gi
-        let newsRegex = /View\sNews/gi
-        let spaceRegex = /(.)\1{4,}/gi
+    let response = await axios(fantasyLeagueURL);
 
-        let rawTransactions = ($('.textWrap p', response.data))
-        rawTransactions.each((index, item) => {
-            let transaction = $(item).text()
+    let videoRegex = /View\sVideos/gi
+    let newsRegex = /View\sNews/gi
+    let spaceRegex = /(.)\1{4,}/gi
 
-            transaction = transaction.replace(videoRegex, '').replace(newsRegex, '').replace(spaceRegex, ' ')
-                transactions.push(transaction)
-            })
-        })
+    let rawTransactions = ($('.textWrap p', response.data))
+
+    rawTransactions.each((index, item) => {
+        let transaction = $(item).text()
+
+        transaction = transaction.replace(videoRegex, '').replace(newsRegex, '').replace(spaceRegex, ' ')
+        transactions.push(transaction)
+    })
 
     return transactions;
 }

@@ -1,13 +1,11 @@
-import config from '../../config'
-import NewsApi from 'newsapi'
+const config = require('../../config')
+const NewsApi = require('newsapi')
 
-const newsApi = NewsApi(config.nfl.news.api.token)
+const newsApi = new NewsApi(config.nfl.news.api.token)
 
-const getNews = () => {
-    newsApi.v2.topHeadlines({sources: 'nfl-news'})
-        .then(response => {
-            return response.articles
-        })
+const getNews = async () => {
+    let response = await newsApi.v2.topHeadlines({sources: 'nfl-news'})
+    return response.articles
 }
 
 module.exports = {

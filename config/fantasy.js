@@ -1,7 +1,7 @@
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 dotenv.config()
 
-export default {
+module.exports = {
     league: {
         id: process.env.FANTASY_LEAGUE_ID,
         url: "https://fantasy.nfl.com/league/"

@@ -1,4 +1,4 @@
-# NFL NEWS for Telegram
+# Fantasy Bot for Telegram
 
 This is a Telegram bot that provides the latest news about the NFL powered by [NewsAPI.org](https://newsapi.org) and
 [NFLResearch @ Twitter](https://twitter.com/NFLResearch) and about one fantasy league at your choice.
@@ -10,7 +10,11 @@ My motto to create this bot came from my frustration to find a reliable service 
 the league. I wanted to know about any player of all teams as soon as possible because I'm a fantasy aficionado and
 information can be translated into fantasy points in this case.
 
-# Using the bot
+## Requirements
+
+The only requirement it is at least a Node version that bundles the ```promisify``` utility (*i.e.* Node 8)
+
+## Using the bot
 
 In order to use this bot you need to create a .ENV file with two specific keys:
 
@@ -34,10 +38,12 @@ If you plan to serve this bot to different users and not just for yourself you g
 
 ## TODO
 
+* Automatized tests that covers at least 80%;
 * Persist the chat ids;
 * More elegant message about Fantasy League transactions;
 * Allow to add more than one fantasy league to update about it.
 * Aggregate posts from [NFL @ Instagram](https://www.instagram.com/nfl/);
-* Add Web User Interface to set the tokens and leagues ids.
+* Add Web User Interface to set the tokens and leagues ids;
+* Dockerfile aiming a simple way to deploy the bot.
 * ~~Aggregate tweets from [@NFLResearch](https://twitter.com/NFLResearch) for real time statistics about the games~~
 * ~~Build a more elegant message, possibly using MarkDown instead using images with caption.~~

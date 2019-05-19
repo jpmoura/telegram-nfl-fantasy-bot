@@ -1,7 +1,7 @@
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 dotenv.config()
 
-export default {
+module.exports = {
     env: process.env.BOT_ENV,
     token: process.env.BOT_TOKEN
 }

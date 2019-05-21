@@ -1,4 +1,8 @@
 # Fantasy Bot for Telegram
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=alert_status)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=bugs)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=code_smells)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=coverage)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
 
 This is a Telegram bot that provides the latest news about the NFL powered by [NewsAPI.org](https://newsapi.org) and
 [NFLResearch @ Twitter](https://twitter.com/NFLResearch) and about one fantasy league at your choice.

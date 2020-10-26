@@ -22,9 +22,9 @@ In order to use this bot you need to create a .ENV file with two specific keys:
 * TWITTER_ACCOUNTS: refers to the accounts from [Twitter](https://twitter.com/) you wanna get tweets from;
 * FANTASY_LEAGUE_ID: refers to the ID of your fantasy league.
 
-You will need to apply for keys in [NewsAPI.org](https://newsapi.org/princing) and
-[Twitter](https://developer.twitter.com/en/apply-for-access.html). After set this .ENV file with these six keys, just
-run the command ```npm install && npm start```. This bot was built on top of NodeJS v8.9.4.
+You will need to apply for a key in [Twitter](https://developer.twitter.com/en/apply-for-access.html). After set this .ENV file with these five keys, just run the command ```npm install && npm start```.
+
+This bot was built on top of NodeJS v8.9.4.
 
 ## Know Issues
 

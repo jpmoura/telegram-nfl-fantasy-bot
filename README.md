@@ -4,15 +4,9 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=code_smells)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=coverage)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
 
-This is a Telegram bot that provides the latest news about the NFL powered by [NewsAPI.org](https://newsapi.org) and
-[NFLResearch @ Twitter](https://twitter.com/NFLResearch) and about one fantasy league at your choice.
-The bot will fetch news about the NFL every minute from their portal via [NewsAPI](https://newsapi.org), also from their
-twitter account and about transactions on your fantasy league and then it will send to all clients that allowed the bot
-to do so.
+This is a Telegram bot that provides the latest news about the NFL powered by [RotoWire](https://www.rotowire.com/) and [Twitter](https://twitter.com) accounts and about one [NFL Fantasy](https://fantasy.nfl.com/) league at your choice. The bot will fetch info about the NFL and the fantasy league every minute  and then it will send to all clients that allowed the bot to do so.
 
-My motto to create this bot came from my frustration to find a reliable service that notifies me about things related to
-the league. I wanted to know about any player of all teams as soon as possible because I'm a fantasy aficionado and
-information can be translated into fantasy points in this case.
+My motto to create this bot came from my frustration to find a reliable service that notifies me about things related to the league. I wanted to know about any player of all teams as soon as possible because I'm a fantasy aficionado and information can be translated into fantasy points in this case.
 
 ## Requirements
 

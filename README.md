@@ -23,7 +23,6 @@ The only requirement it is at least a Node version that bundles the ```promisify
 In order to use this bot you need to create a .ENV file with two specific keys:
 
 * BOT_TOKEN: refers to the bot API token, which one you can get from [@BotFather](https://telegram.me/botfather);
-* NEWS_API_TOKEN: refers to the [NewsAPI.org](https://newsapi.org) API token;
 * TWITTER_CONSUMER_KEY: refers to the key of your [Twitter](https://twitter.com/) client;
 * TWITTER_CONSUMER_SECRET: refers to the secret token of your [Twitter](https://twitter.com/) client;
 * FANTASY_LEAGUE_ID: refers to the ID of your fantasy league.

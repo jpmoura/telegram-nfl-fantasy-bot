@@ -25,6 +25,7 @@ In order to use this bot you need to create a .ENV file with two specific keys:
 * BOT_TOKEN: refers to the bot API token, which one you can get from [@BotFather](https://telegram.me/botfather);
 * TWITTER_CONSUMER_KEY: refers to the key of your [Twitter](https://twitter.com/) client;
 * TWITTER_CONSUMER_SECRET: refers to the secret token of your [Twitter](https://twitter.com/) client;
+* TWITTER_ACCOUNTS: refers to the accounts from [Twitter](https://twitter.com/) you wanna get tweets from;
 * FANTASY_LEAGUE_ID: refers to the ID of your fantasy league.
 
 You will need to apply for keys in [NewsAPI.org](https://newsapi.org/princing) and

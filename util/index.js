@@ -12,8 +12,7 @@ const SourceID = {
 const sendNewsArticle = (mailman, chatID, article) => {
     mailman.sendMessage(
         chatID,
-        `[${article.title}. Reported by ${article.author} at ${new Date(article.publishedAt).toString()}]
-        (${article.urlToImage})\n\n[${article.description}](${article.url})`,
+        `${article.headline}\n\n${article.body}`,
         {parse_mode: "Markdown"})
         .catch(err => {
             console.log(`Error sending article`, err.message)

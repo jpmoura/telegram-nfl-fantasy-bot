@@ -1,6 +1,6 @@
 const SourceID = {
     twitter : "id",
-    news: "title",
+    news: "headline",
 }
 
 /**

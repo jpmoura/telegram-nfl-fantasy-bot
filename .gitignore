@@ -70,3 +70,5 @@ typings/
 # SonarScanner properties
 /sonar-project.properties
 .vscode/launch.json
+
+/dist

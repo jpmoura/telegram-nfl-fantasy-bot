@@ -10,7 +10,7 @@ My motto to create this bot came from my frustration to find a reliable service 
 
 ## Requirements
 
-The only requirement it is at least a Node version that bundles the ```promisify``` utility (*i.e.* Node 8)
+The only requirement it is at least a Node version that bundles the ```promisify``` utility (*i.e.* Node 12)
 
 ## Using the bot
 
@@ -24,7 +24,7 @@ In order to use this bot you need to create a .ENV file with two specific keys:
 
 You will need to apply for a key in [Twitter](https://developer.twitter.com/en/apply-for-access.html). After set this .ENV file with these five keys, just run the command ```npm install && npm start```.
 
-This bot was built on top of NodeJS v8.9.4.
+This bot was built on top of NodeJS v12.
 
 ## Know Issues
 
@@ -38,7 +38,7 @@ If you plan to serve this bot to different users and not just for yourself you g
 
 * Automatized tests that covers at least 80%;
 * Persist the chat ids;
-* More elegant message about Fantasy League transactions;
+* ~~More elegant message about Fantasy League transactions;~~
 * Allow to add more than one fantasy league to update about it.
 * Aggregate posts from [NFL @ Instagram](https://www.instagram.com/nfl/);
 * Add Web User Interface to set the tokens and leagues ids;

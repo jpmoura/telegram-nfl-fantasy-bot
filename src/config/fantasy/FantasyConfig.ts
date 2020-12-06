@@ -1,5 +1,5 @@
-import League from './FantasyLeague';
+import FantasyLeague from './FantasyLeague';
 
 export default class FantasyConfig {
-  league: League = new League();
+  league: FantasyLeague = new FantasyLeague();
 }

@@ -15,7 +15,7 @@ export default class News {
   }
 
   get hashCode(): string {
-    return crypto.createHash('md5').update(this.body).digest('hex');
+    return crypto.createHash('sha256').update(this.body).digest('hex');
   }
 
   toString(): string {

@@ -1,8 +1,7 @@
-FROM node:12
-WORKDIR /usr/src
-RUN [ "git", "clone", "https://github.com/jpmoura/telegram-nfl-fantasy-bot.git"]
+FROM node:14-alpine
 WORKDIR /usr/src/telegram-nfl-fantasy-bot
 COPY .env ./
-RUN [ "npm", "install"]
-RUN [ "npm", "run", "tsc"]
-CMD [ "npm", "start"]
+COPY dist/ ./
+COPY package*.json ./
+RUN [ "npm", "install", "--only=prod" ]
+CMD [ "node", "index.js" ]

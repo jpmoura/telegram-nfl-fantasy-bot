@@ -42,6 +42,6 @@ If you plan to serve this bot to different users and not just for yourself you g
 * Allow to add more than one fantasy league to update about it.
 * Aggregate posts from [NFL @ Instagram](https://www.instagram.com/nfl/);
 * Add Web User Interface to set the tokens and leagues ids;
-* Dockerfile aiming a simple way to deploy the bot.
+* ~~Dockerfile aiming a simple way to deploy the bot.~~
 * ~~Aggregate tweets from [@NFLResearch](https://twitter.com/NFLResearch) for real time statistics about the games~~
 * ~~Build a more elegant message, possibly using MarkDown instead using images with caption.~~

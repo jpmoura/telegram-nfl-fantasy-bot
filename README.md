@@ -37,7 +37,7 @@ If you plan to serve this bot to different users and not just for yourself you g
 ## TODO
 
 * Automatized tests that covers at least 80%;
-* Persist the chat ids;
+* ~~Persist the chat ids;~~
 * ~~More elegant message about Fantasy League transactions;~~
 * Allow to add more than one fantasy league to update about it.
 * Aggregate posts from [NFL @ Instagram](https://www.instagram.com/nfl/);

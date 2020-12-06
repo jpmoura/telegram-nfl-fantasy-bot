@@ -1,17 +1,17 @@
 import Telegraf, { Telegram } from 'telegraf';
 import { TelegrafContext } from 'telegraf/typings/context';
 import * as schedule from 'node-schedule';
+import { Message } from 'telegraf/typings/telegram-types';
 import CommandService from './service/interaction/CommandService';
 import GlobalService from './service/interaction/GlobalService';
 import HearingService from './service/interaction/HearingService';
 import UpdateService from './service/update/UpdateService';
 import MessageService from './service/message/MessageService';
 import News from '../domain/model/News';
+import ChatService from './service/message/ChatService';
 
 export default class BotManager {
   private news = new Map<string, News>();
-
-  private readonly chats: Set<string | number> = new Set();
 
   private readonly bot: Telegraf<TelegrafContext>;
 
@@ -25,13 +25,16 @@ export default class BotManager {
 
   private readonly messageService: MessageService;
 
+  private readonly chatService: ChatService;
+
   constructor(bot: Telegraf<TelegrafContext>, mailman: Telegram) {
     this.bot = bot;
     this.globalService = new GlobalService();
-    this.commandService = new CommandService(this.chats, mailman);
+    this.commandService = new CommandService(mailman);
     this.hearingService = new HearingService();
     this.updateService = new UpdateService();
     this.messageService = new MessageService(mailman);
+    this.chatService = new ChatService();
   }
 
   private setupGlobal(): void {
@@ -40,9 +43,9 @@ export default class BotManager {
   }
 
   private setupCommands(): void {
-    this.bot.command('firstdown', (ctx) => this.commandService.addUser(ctx));
-    this.bot.command('fumble', (ctx) => this.commandService.removeUser(ctx));
-    this.bot.command('latest', (ctx) => this.commandService.sendLatest(ctx, this.news));
+    this.bot.command('firstdown', async (ctx) => this.commandService.addUser(ctx));
+    this.bot.command('fumble', async (ctx) => this.commandService.removeUser(ctx));
+    this.bot.command('latest', async (ctx) => this.commandService.sendLatest(ctx, this.news));
   }
 
   private setupHearings(): void {
@@ -70,12 +73,17 @@ export default class BotManager {
 
   private broadcast(news: Array<News>) {
     console.log(`Sending new ${news.length} itens`);
+    const promises: Array<Promise<Message>> = [];
+    const chats = this.chatService.list();
+    console.log(chats);
 
     news.forEach((specificNews) => {
-      this.chats.forEach((chat) => {
-        this.messageService.send(chat, specificNews);
+      chats.forEach((chat) => {
+        promises.push(this.messageService.send(chat, specificNews));
       });
     });
+
+    Promise.all(promises);
   }
 
   async update(firedAt: Date) {

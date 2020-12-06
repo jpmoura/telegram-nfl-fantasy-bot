@@ -24,7 +24,7 @@ In order to use this bot you need to create a .ENV file with two specific keys:
 
 You will need to apply for a key in [Twitter](https://developer.twitter.com/en/apply-for-access.html). After set this .ENV file with these five keys, just run the command ```npm install && npm start```.
 
-This bot was built on top of NodeJS v12.
+This bot was built on top of NodeJS v14.
 
 ## Know Issues
 

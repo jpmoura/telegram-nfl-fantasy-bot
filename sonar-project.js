@@ -1,9 +1,12 @@
 const sonarqubeScanner = require('sonarqube-scanner');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 sonarqubeScanner(
   {
     serverUrl: 'https://sonarcloud.io',
-    token: 'faa2a8ccaabfe919e20f9fcb612090686acfb19a',
+    token: process.env.SONARCLOUD_TOKEN,
     options: {
       'sonar.projectKey': 'jpmoura_nfl-news-for-telegram',
       'sonar.organization': 'jpmoura-github',

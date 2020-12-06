@@ -10,7 +10,7 @@ export default class MessageService {
     this.messageRepository = new MessageRepository(mailman);
   }
 
-  send(chatId: string | number, news: News): Promise<Message> {
+  send(chatId: number, news: News): Promise<Message> {
     return this.messageRepository.send(chatId, news.toString());
   }
 }

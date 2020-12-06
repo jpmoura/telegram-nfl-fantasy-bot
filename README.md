@@ -24,7 +24,7 @@ In order to use this bot you need to create a .ENV file with two specific keys:
 
 You will need to apply for a key in [Twitter](https://developer.twitter.com/en/apply-for-access.html). After set this .ENV file with these five keys, just run the command ```npm install && npm start```.
 
-This bot was built on top of NodeJS v12.
+This bot was built on top of NodeJS v14.
 
 ## Know Issues
 
@@ -37,7 +37,7 @@ If you plan to serve this bot to different users and not just for yourself you g
 ## TODO
 
 * Automatized tests that covers at least 80%;
-* Persist the chat ids;
+* ~~Persist the chat ids;~~
 * ~~More elegant message about Fantasy League transactions;~~
 * Allow to add more than one fantasy league to update about it.
 * Aggregate posts from [NFL @ Instagram](https://www.instagram.com/nfl/);

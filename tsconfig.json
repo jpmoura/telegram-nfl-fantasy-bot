@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2017"],
+    "module": "CommonJS",
+    "removeComments": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "target": "ES2017",
+    "outDir": "dist",
+    "esModuleInterop": true,
+  },
+  "include": ["./**/*.ts"],
+  "exclude": [
+    "node_modules/**/*",
+    ".webpack/**/*",
+    "_warmup/**/*",
+    ".vscode/**/*"
+  ]
+}

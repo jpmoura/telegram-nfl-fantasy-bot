@@ -1,5 +1,6 @@
 import Datastore from 'nedb';
 import { promisify } from 'util';
+import DatastoreFabric from '../DatastoreFabric';
 
 export default class ChatRepository {
   private readonly db: Datastore;
@@ -9,7 +10,7 @@ export default class ChatRepository {
   private readonly promisifyRemove: any;
 
   constructor() {
-    this.db = new Datastore({ filename: 'bot.db', autoload: true });
+    this.db = DatastoreFabric.chatsDatastore;
     this.promisifyUpdate = promisify(this.db.update.bind(this.db));
     this.promisifyRemove = promisify(this.db.remove).bind(this.db);
   }

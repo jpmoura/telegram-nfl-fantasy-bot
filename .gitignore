@@ -71,4 +71,4 @@ typings/
 .vscode/launch.json
 
 /dist
-bot.db
+*.db

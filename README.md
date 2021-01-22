@@ -1,4 +1,4 @@
-# Fantasy Bot for Telegram
+# NFL & Fantasy News Bot for Telegram 🏈🤖
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=alert_status)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=bugs)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=jpmoura_nfl-news-for-telegram&metric=code_smells)](https://sonarcloud.io/dashboard?id=jpmoura_nfl-news-for-telegram)
@@ -22,13 +22,9 @@ In order to use this bot you need to create a .ENV file with two specific keys:
 * TWITTER_ACCOUNTS: refers to the accounts from [Twitter](https://twitter.com/) you wanna get tweets from;
 * FANTASY_LEAGUE_ID: refers to the ID of your fantasy league.
 
-You will need to apply for a key in [Twitter](https://developer.twitter.com/en/apply-for-access.html). After set this .ENV file with these five keys, just run the command ```npm install && npm start```.
+You will need to apply for a key in [Twitter](https://developer.twitter.com/en/apply-for-access.html). After set this .ENV file with these five keys, just run the command ```yarn && yarn tsc && yarn start```.
 
 This bot was built on top of NodeJS v14.
-
-## Know Issues
-
-* All chats ids will be lost if the bot resets.
 
 ## Disclaimer
 

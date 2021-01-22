@@ -8,12 +8,12 @@ export default class RotowireRepository implements IRepository<News> {
   private rotowireLatestNewsUrl = 'https://www.rotowire.com/football/news.php';
 
   private getHeadline(rawRotowireNews: cheerio.Element): string {
-    const $: cheerio.Root = cheerio.load(rawRotowireNews);
+    const $: cheerio.Root = cheerio.load('');
     return `Rotowire reports 📃 ${$('.news-update__player-link', rawRotowireNews).text()} - ${$('.news-update__headline', rawRotowireNews).text()}`;
   }
 
   private getBody(rawRotowireNews: cheerio.Element): string {
-    const $: cheerio.Root = cheerio.load(rawRotowireNews);
+    const $: cheerio.Root = cheerio.load('');
     return `${$('.news-update__news', rawRotowireNews).text()}`;
   }
 

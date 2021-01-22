@@ -11,7 +11,7 @@ export default class ChatRepository {
 
   constructor() {
     this.db = DatastoreFabric.chatsDatastore;
-    this.promisifyUpdate = promisify(this.db.update.bind(this.db));
+    this.promisifyUpdate = promisify(this.db.update).bind(this.db);
     this.promisifyRemove = promisify(this.db.remove).bind(this.db);
   }
 

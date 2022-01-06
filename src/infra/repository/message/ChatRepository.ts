@@ -1,8 +1,12 @@
+/* eslint-disable jest/unbound-method */
+import { injectable } from 'inversify';
 import Datastore from 'nedb';
 import { promisify } from 'util';
+import IChatRepository from '../../../domain/interface/infra/repository/message/IChatRepository';
 import DatastoreFabric from '../DatastoreFabric';
 
-export default class ChatRepository {
+@injectable()
+export default class ChatRepository implements IChatRepository {
   private readonly db: Datastore;
 
   private readonly promisifyUpdate: any;

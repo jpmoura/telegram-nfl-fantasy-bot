@@ -1,13 +1,10 @@
 {
   "extends": "./tsconfig.common.json",
-  "include": [
-    "src/**/*.ts",
-    "tests/**/*.test.ts",
-  ],
   "exclude": [
     "node_modules/**/*",
     ".webpack/**/*",
     "_warmup/**/*",
     ".vscode/**/*",
+    "tests/**/*"
   ]
 }

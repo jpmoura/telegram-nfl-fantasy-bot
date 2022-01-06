@@ -1,0 +1,63 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - ".github/workflows/ci.yml"
+      - "src/**"
+      - "tests/**"
+  pull_request:
+    branches:
+      - master
+      - develop
+    paths:
+      - ".github/workflows/ci.yml"
+      - "src/**"
+      - "tests/**"
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout repository on branch ${{ github.ref }}"
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install packages
+        run: yarn
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        shell: bash
+        run: |
+          yarn test:ci
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

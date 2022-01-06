@@ -1,12 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import cheerio from 'cheerio';
-import IRepository from '../../../domain/interface/infra/repository/IRepository';
+import { injectable } from 'inversify';
 import Configuration from '../../../config/Configuration';
 import NewsSource from '../../../domain/enum/NewsSource';
+import INewsRepository from '../../../domain/interface/infra/repository/news/INewsRepository';
 import News from '../../../domain/model/News';
 
-export default class FantasyLeagueTransactionRepository
-implements IRepository<News> {
+@injectable()
+export default class FantasyLeagueTransactionRepository implements INewsRepository {
   private getFantasyLeagueUrl(): string {
     return `${Configuration.fantasy.league.url}${Configuration.fantasy.league.id}`;
   }
@@ -16,12 +17,12 @@ implements IRepository<News> {
 
     const response: AxiosResponse<string> = await axios(this.getFantasyLeagueUrl());
 
-    const videoRegex: RegExp = /View\sVideos/gi;
-    const newsRegex: RegExp = /View\sNews/gi;
-    const spaceRegex: RegExp = /(.)\1{4,}/gi;
+    const videoRegex = /View\sVideos/gi;
+    const newsRegex = /View\sNews/gi;
+    const spaceRegex = /(.)\1{4,}/gi;
 
-    const $: cheerio.Root = cheerio.load(response.data);
-    const rawTransactions: cheerio.Cheerio = ($('.textWrap p'));
+    const $ = cheerio.load(response.data);
+    const rawTransactions = ($('.textWrap p'));
 
     rawTransactions.each((_: any, item: any) => {
       let transaction: string = $(item).text();

@@ -16,5 +16,13 @@
     "*.env.prod": "env",
     "*.env.prd": "env",
     "*.env.example": "env",
-  }
+  },
+  "cSpell.words": [
+    "autoload",
+    "firstdown",
+    "inversify",
+    "rotowire",
+    "Rotowire",
+    "tslog"
+  ]
 }

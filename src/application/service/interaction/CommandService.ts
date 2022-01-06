@@ -1,30 +1,30 @@
-import { Telegram } from 'telegraf';
+import { inject, injectable } from 'inversify';
 import { TelegrafContext } from 'telegraf/typings/context';
 import { Message } from 'telegraf/typings/telegram-types';
+import Types from '../../../cross-cutting/ioc/Types';
 import ICommandService from '../../../domain/interface/application/service/interaction/ICommandService';
+import IChatService from '../../../domain/interface/application/service/message/IChatService';
+import IMessageService from '../../../domain/interface/application/service/message/IMessageService';
+import ILogger from '../../../domain/interface/infra/repository/log/ILogger';
 import News from '../../../domain/model/News';
-import ChatService from '../message/ChatService';
-import MessageService from '../message/MessageService';
 
+@injectable()
 export default class CommandService implements ICommandService {
-  private readonly messageService: MessageService;
-
-  private readonly chatService: ChatService;
-
-  constructor(mailman: Telegram) {
-    this.messageService = new MessageService(mailman);
-    this.chatService = new ChatService();
-  }
+  constructor(
+    @inject(Types.Logger) private readonly logger: ILogger,
+    @inject(Types.MessageService) private readonly messageService: IMessageService,
+    @inject(Types.ChatService) private readonly chatService: IChatService,
+  ) { }
 
   async addUser(ctx: TelegrafContext): Promise<Message> {
     await this.chatService.create(ctx.update.message.chat.id);
-    console.log(`New client ${ctx.update.message.chat.id} added`);
+    this.logger.info(`New client ${ctx.update.message.chat.id} added`);
     return ctx.reply(`Gotcha ${ctx.update.message.from.first_name}! From now on you will receive news about NFL as soon them are published 👌`);
   }
 
   async removeUser(ctx: TelegrafContext): Promise<Message> {
     await this.chatService.delete(ctx.update.message.chat.id);
-    console.log(`Chat ${ctx.update.message.chat.id} removed from list`);
+    this.logger.info(`Chat ${ctx.update.message.chat.id} removed from list`);
     return ctx.replyWithMarkdown('Ok then, you will not hear from me anymore 😭\n'
           + 'If you change your mind, just send me `/firstdown` again 😉');
   }

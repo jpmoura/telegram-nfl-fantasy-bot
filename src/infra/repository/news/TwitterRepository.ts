@@ -1,19 +1,22 @@
+import { inject, injectable } from 'inversify';
+import { Logger } from 'tslog';
 import Twit from 'twit';
 import { promisify } from 'util';
 import Configuration from '../../../config/Configuration';
+import Types from '../../../cross-cutting/ioc/Types';
 import NewsSource from '../../../domain/enum/NewsSource';
-import IRepository from '../../../domain/interface/infra/repository/IRepository';
+import INewsRepository from '../../../domain/interface/infra/repository/news/INewsRepository';
 import News from '../../../domain/model/News';
 
-export default class TwitterRepository implements IRepository<News> {
-  private T: Twit = new Twit({
-    consumer_key: Configuration.twitter.consumer.key,
-    consumer_secret: Configuration.twitter.consumer.secret,
-    app_only_auth: true,
-  });
+@injectable()
+export default class TwitterRepository implements INewsRepository {
+  constructor(
+    @inject(Types.Logger) private readonly logger: Logger,
+    @inject(Types.TwitterClient) private readonly client: Twit,
+  ) { }
 
   private getTweetsFrom(username: string): Promise<any> {
-    const promisifyGet = promisify(this.T.get.bind(this.T));
+    const promisifyGet = promisify(this.client.get.bind(this.client));
 
     return promisifyGet('statuses/user_timeline',
       {
@@ -24,7 +27,7 @@ export default class TwitterRepository implements IRepository<News> {
         tweet_mode: 'extended',
         trim_user: true,
       }).catch((err: Error) => {
-      console.log('Error while getting new tweets', err);
+      this.logger.error('Error while getting new tweets', err);
       return err;
     });
   }

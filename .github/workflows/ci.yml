@@ -25,7 +25,8 @@ on:
       - "tsconfig*"
 
 jobs:
-  Code Analysis:
+  code_analysis:
+    name: "Code Analysis"
     runs-on: ubuntu-latest
 
     steps:

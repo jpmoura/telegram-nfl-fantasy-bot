@@ -9,6 +9,9 @@ on:
       - ".github/workflows/ci.yml"
       - "src/**"
       - "tests/**"
+      - "package.json"
+      - "yarn.lock"
+      - "tsconfig*"
   pull_request:
     branches:
       - master
@@ -17,9 +20,12 @@ on:
       - ".github/workflows/ci.yml"
       - "src/**"
       - "tests/**"
+      - "package.json"
+      - "yarn.lock"
+      - "tsconfig*"
 
 jobs:
-  sonarcloud:
+  Code Analysis:
     runs-on: ubuntu-latest
 
     steps:

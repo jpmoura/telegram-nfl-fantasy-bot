@@ -1,7 +1,28 @@
 {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
-    },
-    "eslint.validate": ["javascript", "typescript", "typescriptreact"],
-    "eslint.alwaysShowStatus": true,
+  "typescript.referencesCodeLens.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.alwaysShowStatus": true,
+  "eslint.packageManager": "yarn",
+  "cSpell.language": "en,pt,pt_BR",
+  "files.associations": {
+    "*.env.dev": "env",
+    "*.env.prod": "env",
+    "*.env.prd": "env",
+    "*.env.example": "env",
+  },
+  "cSpell.words": [
+    "autoload",
+    "firstdown",
+    "inversify",
+    "rotowire",
+    "Rotowire",
+    "tslog"
+  ]
 }

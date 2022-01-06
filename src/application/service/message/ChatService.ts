@@ -1,7 +1,11 @@
-import ChatRepository from '../../../infra/repository/chat/ChatRepository';
+import { inject, injectable } from 'inversify';
+import Types from '../../../cross-cutting/ioc/Types';
+import IChatService from '../../../domain/interface/application/service/message/IChatService';
+import IChatRepository from '../../../domain/interface/infra/repository/message/IChatRepository';
 
-export default class ChatService {
-  private readonly chatRepository: ChatRepository = new ChatRepository();
+@injectable()
+export default class ChatService implements IChatService {
+  constructor(@inject(Types.ChatRepository) private readonly chatRepository: IChatRepository) { }
 
   async create(chatId: number): Promise<void> {
     await this.chatRepository.insert(chatId);

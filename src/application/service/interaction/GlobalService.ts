@@ -1,6 +1,8 @@
+import { injectable } from 'inversify';
 import { TelegrafContext } from 'telegraf/typings/context';
 import IGlobalService from '../../../domain/interface/application/service/interaction/IGlobalService';
 
+@injectable()
 export default class GlobalService implements IGlobalService {
   start(ctx: TelegrafContext): void {
     ctx.replyWithMarkdown('Hey, if you want to receive news about the NFL just send me the command'

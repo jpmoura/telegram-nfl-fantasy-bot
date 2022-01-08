@@ -30,15 +30,16 @@ describe('given a chat service', () => {
   it.each([
     [[]],
     [[faker.datatype.number()]],
-  ])('when a list of chats is needed and the current list is %p then should return the current list', (currentChatList: Array<number>) => {
+  ])('when a list of chats is needed and the current list is %p then should return the current list', async (expectedChatList: Array<number>) => {
     expect.hasAssertions();
 
     const chatRepository = mock<IChatRepository>();
-    chatRepository.list.mockReturnValue(currentChatList);
+    chatRepository.list.mockReturnValue(expectedChatList);
     const cut = new ChatService(chatRepository);
 
-    cut.list();
+    const response = cut.list();
 
+    expect(response).toStrictEqual(expectedChatList);
     expect(chatRepository.list).toHaveBeenCalledTimes(1);
   });
 });

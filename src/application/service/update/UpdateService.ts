@@ -17,16 +17,16 @@ export default class UpdateService implements IUpdateService {
   ) { }
 
   async update(moment: Date): Promise<Array<News>> {
-    let news: Array<News> = [];
+    const promises = new Array<Promise<News[]>>();
 
-    const transactions = await this.fantasyLeagueTransactionRepository.list();
-    const tweets = await this.twitterRepository.list();
-    const rotowireNews = await this.rotowireRepository.list();
+    promises.push(this.fantasyLeagueTransactionRepository.list());
+    promises.push(this.twitterRepository.list());
+    promises.push(this.rotowireRepository.list());
 
-    news = news.concat(transactions).concat(tweets).concat(rotowireNews);
+    const news = await Promise.all(promises);
 
     this.logger.info(`News updated at ${moment}`);
 
-    return news;
+    return news.reduce((acc, currentNews) => acc.concat(currentNews), []);
   }
 }

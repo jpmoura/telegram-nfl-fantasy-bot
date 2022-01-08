@@ -1,33 +1,38 @@
-/* eslint-disable jest/unbound-method */
 import { injectable } from 'inversify';
-import Datastore from 'nedb';
-import { promisify } from 'util';
+import StormDB from 'stormdb';
 import IChatRepository from '../../../domain/interface/infra/repository/message/IChatRepository';
-import DatastoreFabric from '../DatastoreFabric';
+
+const dbFilename = 'chats';
+
+type DbSchema = {
+  chats: Array<number>;
+};
 
 @injectable()
 export default class ChatRepository implements IChatRepository {
-  private readonly db: Datastore;
-
-  private readonly promisifyUpdate: any;
-
-  private readonly promisifyRemove: any;
+  protected readonly db: StormDB;
 
   constructor() {
-    this.db = DatastoreFabric.chatsDatastore;
-    this.promisifyUpdate = promisify(this.db.update).bind(this.db);
-    this.promisifyRemove = promisify(this.db.remove).bind(this.db);
+    const engine = new StormDB.localFileEngine(`./${dbFilename}.db`, {
+      async: true,
+    });
+    this.db = new StormDB(engine);
+    this.db.default({ chats: [] } as DbSchema);
   }
 
   async insert(chatId: number) {
-    await this.promisifyUpdate({ chatId }, { $set: { chatId } }, { upsert: true });
+    this.db.get(dbFilename).push(chatId);
+    await this.db.save();
   }
 
-  list(): any[] {
-    return this.db.getAllData().map((item) => item.chatId);
+  list(): Array<number> {
+    return this.db.get(dbFilename).value();
   }
 
   async delete(chatId: number) {
-    await this.promisifyRemove({ chatId }, {});
+    const chats: Array<number> = this.db.get(dbFilename).value();
+    const updatedChats = chats.filter((currentChatId: number) => currentChatId !== chatId);
+    this.db.get(dbFilename).set(updatedChats);
+    await this.db.save();
   }
 }

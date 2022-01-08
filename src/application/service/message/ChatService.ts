@@ -12,7 +12,7 @@ export default class ChatService implements IChatService {
   }
 
   list(): Array<number> {
-    return this.chatRepository.list().map((chatId) => Number(chatId));
+    return this.chatRepository.list();
   }
 
   async delete(chatId: number): Promise<void> {

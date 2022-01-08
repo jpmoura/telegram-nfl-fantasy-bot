@@ -1,3 +1,4 @@
+/* eslint-disable jest/unbound-method */
 /* eslint-disable jest/no-hooks */
 import 'reflect-metadata';
 import faker from 'faker';
@@ -99,6 +100,7 @@ describe('given a bot to manage', () => {
 
         cut.start();
         await (schedule.scheduleJob as jest.Mock).mock.calls[0][1](faker.date.recent());
+        await new Promise(process.nextTick);
 
         expect(updateService.update).toHaveBeenCalledTimes(1);
         expect(messageService.send).not.toHaveBeenCalled();
@@ -126,6 +128,7 @@ describe('given a bot to manage', () => {
 
         cut.start();
         await (schedule.scheduleJob as jest.Mock).mock.calls[0][1](faker.date.recent());
+        await new Promise(process.nextTick);
 
         expect(updateService.update).toHaveBeenCalledTimes(1);
         expect(messageService.send).toHaveBeenCalledTimes(1);

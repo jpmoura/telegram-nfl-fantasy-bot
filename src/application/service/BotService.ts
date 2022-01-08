@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify';
 import * as schedule from 'node-schedule';
 import Telegraf from 'telegraf';
 import { TelegrafContext } from 'telegraf/typings/context';
-import { Message } from 'telegraf/typings/telegram-types';
 import Types from '../../cross-cutting/ioc/Types';
 import IBotService from '../../domain/interface/application/service/IBotService';
 import ICommandService from '../../domain/interface/application/service/interaction/ICommandService';
@@ -63,30 +62,27 @@ export default class BotService implements IBotService {
     return diffNews;
   }
 
-  private broadcast(breakingNews: Array<News>) {
-    const promises: Array<Promise<Message>> = [];
+  private broadcast(breakingNews: Array<News>): void {
     const chats = this.chatService.list();
     this.logger.info(`Sending ${breakingNews.length} breaking news to ${chats.length} chats`);
 
     breakingNews.forEach((news) => {
       chats.forEach((chat) => {
-        promises.push(this.messageService.send(chat, news));
+        this.messageService.send(chat, news);
       });
     });
-
-    Promise.all(promises);
   }
 
-  private async update(firedAt: Date) {
+  private async update(firedAt: Date): Promise<void> {
     const latestNews = await this.updateService.update(firedAt);
-    const breakingNews: Array<News> = this.getDiffNews(latestNews);
+    const breakingNews = this.getDiffNews(latestNews);
     this.broadcast(breakingNews);
     this.currentNews = new Map<string, News>(
       latestNews.map((news: News) => [news.hashCode, news]),
     );
   }
 
-  start() {
+  start(): void {
     this.setup();
     this.telegraf.startPolling();
     this.logger.info('Bot started');

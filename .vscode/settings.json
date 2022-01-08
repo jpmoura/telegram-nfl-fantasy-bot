@@ -23,6 +23,7 @@
     "inversify",
     "rotowire",
     "Rotowire",
+    "stormdb",
     "tslog"
   ]
 }

@@ -129,7 +129,7 @@ describe('given a bot to manage', () => {
         cut.start();
         await (schedule.scheduleJob as jest.Mock).mock.calls[0][1](faker.date.recent());
         await new Promise(process.nextTick);
-
+        
         expect(updateService.update).toHaveBeenCalledTimes(1);
         expect(messageService.send).toHaveBeenCalledTimes(1);
       });

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import cheerio from 'cheerio';
+import cheerio, { Cheerio, CheerioAPI, Element } from 'cheerio';
 import { injectable } from 'inversify';
 import Configuration from '../../../config/Configuration';
 import NewsSource from '../../../domain/enum/NewsSource';
@@ -21,10 +21,10 @@ export default class FantasyLeagueTransactionRepository implements INewsReposito
     const newsRegex = /View\sNews/gi;
     const spaceRegex = /(.)\1{4,}/gi;
 
-    const $ = cheerio.load(response.data);
-    const rawTransactions = ($('.textWrap p'));
+    const $: CheerioAPI = cheerio.load(response.data);
+    const rawTransactions: Cheerio<Element> = ($('.textWrap p'));
 
-    rawTransactions.each((_: any, item: any) => {
+    rawTransactions.each((_: number, item: Element) => {
       let transaction: string = $(item).text();
       transaction = transaction.replace(videoRegex, '').replace(newsRegex, '').replace(spaceRegex, ' ');
       transactions.push(new News('New Transaction on Fantasy League 🔛', transaction, NewsSource.FantasyLeague));

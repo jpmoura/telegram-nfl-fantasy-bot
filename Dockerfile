@@ -1,7 +1,15 @@
-FROM node:14-alpine
-WORKDIR /usr/src/telegram-nfl-fantasy-bot
-COPY .env ./
-COPY dist/ ./
-COPY package*.json ./
-RUN [ "yarn", "install", "--production=true" ]
-CMD [ "node", "index.js" ]
+FROM node:14-alpine AS base
+WORKDIR /app
+
+FROM base AS build
+WORKDIR /build
+COPY . .
+RUN yarn
+RUN yarn build
+
+FROM base AS final
+WORKDIR /app
+COPY --from=build /build/dist .
+COPY --from=build /build/.env .
+COPY --from=build /build/node_modules ./node_modules
+ENTRYPOINT [ "node", "index.js" ]

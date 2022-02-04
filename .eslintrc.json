@@ -6,10 +6,12 @@
   },
     "plugins": [
     "@typescript-eslint",
+    "sonarjs",
     "jest"
   ],
   "extends": [
     "airbnb-typescript/base",
+    "plugin:sonarjs/recommended",
     "plugin:jest/all",
     "plugin:import/recommended"
   ],

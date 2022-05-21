@@ -1,6 +1,6 @@
 {
   "name": "nfl-telegram-bot",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "A Telegram bot that provides the latest news about the NFL",
   "repository": "github:jpmoura/nfl-news-for-telegram",
   "main": "src/index.ts",

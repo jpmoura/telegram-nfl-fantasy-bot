@@ -27,8 +27,9 @@ const infraModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<Twit>(Types.TwitterClient).toConstantValue(twitterClient);
 
   // Repositories
+  const chatRepository = new ChatRepository(new Logger());
+  bind<IChatRepository>(Types.ChatRepository).toConstantValue(chatRepository);
   bind<IMessageRepository>(Types.MessageRepository).to(MessageRepository);
-  bind<IChatRepository>(Types.ChatRepository).to(ChatRepository);
   bind<INewsRepository>(Types.FantasyLeagueTransactionRepository)
     .to(FantasyLeagueTransactionRepository);
   bind<INewsRepository>(Types.RotowireRepository).to(RotowireRepository);

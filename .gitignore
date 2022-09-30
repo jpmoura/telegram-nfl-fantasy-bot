@@ -69,3 +69,4 @@ typings/
 # Production files
 /dist
 *.db
+chats.json

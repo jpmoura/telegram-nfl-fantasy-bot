@@ -11,7 +11,7 @@ export default class ChatService implements IChatService {
     await this.chatRepository.insert(chatId);
   }
 
-  list(): Array<number> {
+  async list(): Promise<Array<number>> {
     return this.chatRepository.list();
   }
 

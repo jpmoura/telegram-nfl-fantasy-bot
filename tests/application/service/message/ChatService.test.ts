@@ -34,10 +34,10 @@ describe('given a chat service', () => {
     expect.hasAssertions();
 
     const chatRepository = mock<IChatRepository>();
-    chatRepository.list.mockReturnValue(expectedChatList);
+    chatRepository.list.mockResolvedValue(expectedChatList);
     const cut = new ChatService(chatRepository);
 
-    const response = cut.list();
+    const response = await cut.list();
 
     expect(response).toStrictEqual(expectedChatList);
     expect(chatRepository.list).toHaveBeenCalledTimes(1);

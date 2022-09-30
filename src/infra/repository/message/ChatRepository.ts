@@ -1,38 +1,45 @@
-import { injectable } from 'inversify';
-import StormDB from 'stormdb';
+import { inject, injectable } from 'inversify';
+import { Config, JsonDB } from 'node-json-db';
+import Types from '../../../cross-cutting/ioc/Types';
+import ILogger from '../../../domain/interface/infra/repository/log/ILogger';
 import IChatRepository from '../../../domain/interface/infra/repository/message/IChatRepository';
-
-const dbFilename = 'chats';
-
-type DbSchema = {
-  chats: Array<number>;
-};
+import fs from 'fs';
 
 @injectable()
 export default class ChatRepository implements IChatRepository {
-  protected readonly db: StormDB;
+  private readonly db: JsonDB;
 
-  constructor() {
-    const engine = new StormDB.localFileEngine(`./${dbFilename}.db`, {
-      async: true,
-    });
-    this.db = new StormDB(engine);
-    this.db.default({ chats: [] } as DbSchema);
+  private chats: number[] = [];
+
+  constructor(@inject(Types.Logger) private readonly logger: ILogger) {
+    const filename = 'chats.json';
+    this.db = new JsonDB(new Config(filename, true, false, '/', true));
+
+    if (!fs.existsSync(filename)) {
+      fs.writeFileSync(filename, JSON.stringify({ chats: this.chats }));
+    } else {
+      this.list().then(() => this.logger.info('Chat Repository initialized'));
+    }
   }
 
   async insert(chatId: number) {
-    this.db.get(dbFilename).push(chatId);
-    await this.db.save();
+    this.chats.push(chatId);
+    await this.db.push('/chats', this.chats, true);
   }
 
-  list(): Array<number> {
-    return this.db.get(dbFilename).value();
+  async list(): Promise<Array<number>> {
+    try {
+      this.chats = await this.db.getData('/chats');
+    } catch (error) {
+      this.logger.error('Error while trying to read from DB', error);
+    }
+
+    return this.chats;
   }
 
   async delete(chatId: number) {
-    const chats: Array<number> = this.db.get(dbFilename).value();
-    const updatedChats = chats.filter((currentChatId: number) => currentChatId !== chatId);
-    this.db.get(dbFilename).set(updatedChats);
-    await this.db.save();
+    const currentChats = await this.list();
+    this.chats = currentChats.filter((currentChatId) => currentChatId !== chatId);
+    await this.db.push('/chats', this.chats, true);
   }
 }

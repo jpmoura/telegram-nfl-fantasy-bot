@@ -62,9 +62,9 @@ export default class BotService implements IBotService {
     return diffNews;
   }
 
-  private broadcast(breakingNews: Array<News>): void {
-    const chats = this.chatService.list();
-    this.logger.info(`Sending ${breakingNews.length} breaking news to ${chats.length} chats`);
+  private async broadcast(breakingNews: Array<News>): Promise<void> {
+    const chats = await this.chatService.list();
+    this.logger.info(`Sending ${breakingNews.length} breaking news to ${chats.length} chats`, chats);
 
     breakingNews.forEach((news) => {
       chats.forEach((chat) => {
@@ -76,7 +76,7 @@ export default class BotService implements IBotService {
   private async update(firedAt: Date): Promise<void> {
     const latestNews = await this.updateService.update(firedAt);
     const breakingNews = this.getDiffNews(latestNews);
-    this.broadcast(breakingNews);
+    await this.broadcast(breakingNews);
     this.currentNews = new Map<string, News>(
       latestNews.map((news: News) => [news.hashCode, news]),
     );

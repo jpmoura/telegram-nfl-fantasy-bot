@@ -56,7 +56,7 @@ describe('given a bot to manage', () => {
       const telegraf = mock<Telegraf<TelegrafContext>>();
       const messageService = mock<IMessageService>();
       const chatService = mock<IChatService>();
-      chatService.list.mockReturnValue([]);
+      chatService.list.mockResolvedValue([]);
       const updateService = mock<IUpdateService>();
       updateService.update.mockResolvedValue([]);
       const cut = new BotService(
@@ -84,7 +84,7 @@ describe('given a bot to manage', () => {
         const telegraf = mock<Telegraf<TelegrafContext>>();
         const messageService = mock<IMessageService>();
         const chatService = mock<IChatService>();
-        chatService.list.mockReturnValue([]);
+        chatService.list.mockResolvedValue([]);
         const updateService = mock<IUpdateService>();
         updateService.update.mockResolvedValue([mock<News>()]);
         const cut = new BotService(
@@ -112,7 +112,7 @@ describe('given a bot to manage', () => {
         const telegraf = mock<Telegraf<TelegrafContext>>();
         const messageService = mock<IMessageService>();
         const chatService = mock<IChatService>();
-        chatService.list.mockReturnValue([faker.datatype.number()]);
+        chatService.list.mockResolvedValue([faker.datatype.number()]);
         const updateService = mock<IUpdateService>();
         updateService.update.mockResolvedValue([mock<News>()]);
         const cut = new BotService(

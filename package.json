@@ -1,10 +1,10 @@
 {
   "name": "nfl-telegram-bot",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "A Telegram bot that provides the latest news about the NFL",
   "repository": "github:jpmoura/nfl-news-for-telegram",
   "main": "src/index.ts",
-  "packageManager": "yarn@1.22.17",
+  "packageManager": "yarn@1.22.19",
   "engines": {
     "node": ">= 12.0.0"
   },
@@ -17,7 +17,7 @@
     "test:cov": "jest --coverage",
     "test:ci": "yarn test:cov --maxWorkers=2",
     "lint": "npx eslint --ext .ts src/ tests/",
-    "build:docker": "docker build . -t telegram-nfl-fantasy-bot:3.2.0"
+    "build:docker": "docker build . -t telegram-nfl-fantasy-bot:3.2.2"
   },
   "keywords": [
     "NFL",
@@ -43,9 +43,9 @@
     "cheerio": "^1.0.0-rc.10",
     "dotenv": "^6.1.0",
     "inversify": "^6.0.1",
+    "node-json-db": "^2.1.3",
     "node-schedule": "^1.3.0",
     "reflect-metadata": "^0.1.13",
-    "stormdb": "^0.5.2",
     "telegraf": "^3.25.0",
     "tslog": "^3.3.1",
     "twit": "^2.2.11"
